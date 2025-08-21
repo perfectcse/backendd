@@ -13,15 +13,10 @@ app.use(cors());
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("✅ MongoDB connected");
-    console.log("📂 Connected to DB:", mongoose.connection.name);
-  })
+  .connect(process.env.MONGO_URI) // from .env file
+  .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
+
 // Test route
 app.get("/", (req, res) => {
   res.send("Backend is running. Use POST /register to register a user.");
@@ -48,21 +43,9 @@ app.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
-    console.log("✅ Saved user:", newUser);
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    console.error("❌ Error:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Fetch all users (for testing/debugging)
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error("❌ Error fetching users:", err);
+    console.error("Error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

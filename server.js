@@ -14,7 +14,7 @@ app.use(cors());
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, {
-    dbName: "user", // ✅ Database name = user
+    dbName: "form_validation_db", // ✅ matches Compass database
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

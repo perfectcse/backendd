@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
   },
-  { collection: "users" } // ✅ ensures collection is 'users'
+  { collection: "form_validation" } // ✅ Collection name = form_validation
 );
 
 module.exports = mongoose.model("User", userSchema);

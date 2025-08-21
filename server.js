@@ -14,7 +14,7 @@ app.use(cors());
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, {
-    dbName: "users", // ✅ Ensure data goes into 'users' database
+    dbName: "user", // ✅ Database name = user
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -47,9 +47,21 @@ app.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
+    console.log("✅ Saved user:", newUser);
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    console.error("Error:", err);
+    console.error("❌ Error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Fetch all users (for testing/debugging)
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    console.error("❌ Error fetching users:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

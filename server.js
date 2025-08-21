@@ -14,13 +14,14 @@ app.use(cors());
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, {
-    dbName: "form_validation_db", // ✅ matches Compass database
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("✅ MongoDB connected"))
+  .then(() => {
+    console.log("✅ MongoDB connected");
+    console.log("📂 Connected to DB:", mongoose.connection.name);
+  })
   .catch((err) => console.error("❌ MongoDB connection error:", err));
-
 // Test route
 app.get("/", (req, res) => {
   res.send("Backend is running. Use POST /register to register a user.");
